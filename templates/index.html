@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reserva de Eventos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Informações</h2>
+            <div class="online-info">
+                <p>Usuários Online: <span id="online-count">0</span></p>
+                <p>Seu Status: <span id="user-status">Aguardando...</span></p>
+                <div id="timer-container" style="display: none;">
+                    <p>Tempo Restante: <span id="timer">30</span>s</p>
+                </div>
+            </div>
+            <div class="queue-container">
+                <h3>Fila de Espera</h3>
+                <ul id="waiting-queue"></ul>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h1>Eventos Disponíveis</h1>
+            <div class="events-grid">
+                {% for event in events.values() %}
+                <div class="event-card" data-event-id="{{ event.id }}">
+                    <h3>{{ event.name }}</h3>
+                    <p>Vagas disponíveis: <span class="available-slots">{{ event.available_slots }}</span></p>
+                    <button class="reserve-btn">Reservar</button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div id="reservation-modal" class="modal">
+        <div class="modal-content">
+            <h2>Confirmar Reserva</h2>
+            <p>Tempo restante: <span id="confirmation-timer">120</span>s</p>
+            <form id="reservation-form">
+                <input type="text" name="name" placeholder="Nome" required>
+                <input type="tel" name="phone" placeholder="Telefone" required>
+                <button type="submit">Confirmar Reserva</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 
